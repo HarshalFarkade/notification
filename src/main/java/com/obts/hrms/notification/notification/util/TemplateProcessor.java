@@ -14,7 +14,7 @@ public class TemplateProcessor {
 
         for (Map.Entry<String, Object> entry : data.entrySet()) {
 
-            String key = "{{" + entry.getKey() + "}}";
+            String key = "${" + entry.getKey() + "}";
             String value = entry.getValue() != null ? entry.getValue().toString() : "";
 
             result = result.replace(key, value);

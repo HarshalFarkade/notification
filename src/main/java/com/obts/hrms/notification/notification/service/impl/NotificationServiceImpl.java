@@ -87,7 +87,7 @@ public class NotificationServiceImpl implements NotificationService {
                     body
             );
 
-            return new SendMailResponseDTO(true, "Email is being processed", notification.getId());
+            return new SendMailResponseDTO(true, "Email sent Successfully", notification.getId());
 
         } catch (Exception e) {
             return new SendMailResponseDTO(false, e.getMessage(), null);
