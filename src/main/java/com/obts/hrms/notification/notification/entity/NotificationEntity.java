@@ -22,6 +22,8 @@ public class NotificationEntity {
     private LocalDate createdAt;
     private LocalDate updateAt;
 
+    public NotificationEntity() {
+    }
 
     public NotificationEntity(Long id, String employeeId, String toMail, String subject, String mapToTemplate, String mailTemplate, LocalDate createdAt, LocalDate updateAt) {
         this.id = id;
