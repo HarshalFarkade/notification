@@ -1,12 +1,13 @@
 package com.obts.hrms.notification.notification.service.impl;
 
-import jakarta.mail.internet.MimeMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+
+import jakarta.mail.internet.MimeMessage;
 
 @Service
 public class EmailService {
@@ -27,17 +28,24 @@ public class EmailService {
         try {
             log.info("📧 Preparing email to: {}", to);
 
+            if (subject == null || subject.isEmpty()) {
+                subject = "Notification from HRMS";
+            }
+
             MimeMessage message = mailSender.createMimeMessage();
 
-            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            // ✅ UTF-8 fix
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
-            helper.setFrom(fromMail);
+            // ✅ Better from name
+            helper.setFrom(fromMail, "OBTS HR Team");
+
             helper.setTo(to);
             helper.setSubject(subject);
-            helper.setText(body, true);
+            helper.setText(body, true); // HTML
 
             mailSender.send(message);
-
+           
             log.info("✅ Email sent successfully to: {}", to);
 
         } catch (Exception e) {

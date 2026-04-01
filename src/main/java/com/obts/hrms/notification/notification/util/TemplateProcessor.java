@@ -6,13 +6,16 @@ import java.util.Map;
 
 @Component
 public class TemplateProcessor {
+
     public String process(String template, Map<String, Object> data) {
 
-        if (template == null || data == null) return template;
+        if (template == null) return null;
+        if (data == null || data.isEmpty()) return template;
 
         StringBuilder result = new StringBuilder(template);
 
         for (Map.Entry<String, Object> entry : data.entrySet()) {
+
             String key = "${" + entry.getKey() + "}";
             String value = entry.getValue() != null ? entry.getValue().toString() : "";
 
@@ -22,6 +25,7 @@ public class TemplateProcessor {
             }
         }
 
-        return result.toString();
+        // 🔥 remove unreplaced placeholders
+        return result.toString().replaceAll("\\$\\{[^}]+}", "");
     }
 }

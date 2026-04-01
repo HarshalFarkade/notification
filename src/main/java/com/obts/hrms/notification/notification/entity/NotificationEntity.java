@@ -16,16 +16,41 @@ public class NotificationEntity {
     private String employeeId;
 
     private String toMail;
+    @Column(columnDefinition = "TEXT")
+    private String body;
+
+    @Column(columnDefinition = "TEXT")
     private String subject;
-    private String mapToTemplate ;
+
+    @Column(columnDefinition = "TEXT")
+    private String mapToTemplate;
     private String mailTemplate;
     private LocalDate createdAt;
     private LocalDate updateAt;
+    private String status;
+    
+    
 
-    public NotificationEntity() {
+    public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getBody() {
+		return body;
+	}
+
+	public void setBody(String body) {
+		this.body = body;
+	}
+
+	public NotificationEntity() {
     }
 
-    public NotificationEntity(Long id, String employeeId, String toMail, String subject, String mapToTemplate, String mailTemplate, LocalDate createdAt, LocalDate updateAt) {
+    public NotificationEntity(Long id, String employeeId, String toMail, String subject, String mapToTemplate, String mailTemplate, LocalDate createdAt, LocalDate updateAt,String body,String status) {
         this.id = id;
         this.employeeId = employeeId;
         this.toMail = toMail;
@@ -34,6 +59,8 @@ public class NotificationEntity {
         this.mailTemplate = mailTemplate;
         this.createdAt = createdAt;
         this.updateAt = updateAt;
+        this.body=body;
+        this.status=status;
     }
 
     public Long getId() {
@@ -113,4 +140,5 @@ public class NotificationEntity {
                 ", updateAt=" + updateAt +
                 '}';
     }
+
 }
