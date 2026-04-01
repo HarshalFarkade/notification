@@ -20,23 +20,26 @@ public class TemplateEntity {
     @Column(columnDefinition = "TEXT")
     private String templateBody;
 
-    private LocalDate startDate;
-    private LocalDate endDate;
 
-    private Boolean active;
-    private Boolean isDelete;
+    private LocalDate createdAt;
+    private LocalDate updatedAt;
+
+    @Column(name = "is_active", nullable = false)
+    private Boolean isActive=true ;
+    @Column(name = "is_delete", nullable = false)
+    private Boolean isDelete=false;
 
     public TemplateEntity() {
     }
 
-    public TemplateEntity(Long id, String templateName, String templateSubject, String templateBody, LocalDate startDate, LocalDate endDate, Boolean active, Boolean isDelete) {
+    public TemplateEntity(Long id, String templateName, String templateSubject, String templateBody, LocalDate createdAt, LocalDate updatedAt, Boolean isActive, Boolean isDelete) {
         this.id = id;
         this.templateName = templateName;
         this.templateSubject = templateSubject;
         this.templateBody = templateBody;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.active = active;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.isActive = isActive;
         this.isDelete = isDelete;
     }
 
@@ -72,28 +75,28 @@ public class TemplateEntity {
         this.templateBody = templateBody;
     }
 
-    public LocalDate getStartDate() {
-        return startDate;
+    public LocalDate getCreatedAt() {
+        return createdAt;
     }
 
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
+    public void setCreatedAt(LocalDate createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public LocalDate getEndDate() {
-        return endDate;
+    public LocalDate getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
+    public void setUpdatedAt(LocalDate updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public Boolean getActive() {
-        return active;
+        return isActive;
     }
 
     public void setActive(Boolean active) {
-        this.active = active;
+        isActive = active;
     }
 
     public Boolean getDelete() {
@@ -111,9 +114,9 @@ public class TemplateEntity {
                 ", templateName='" + templateName + '\'' +
                 ", templateSubject='" + templateSubject + '\'' +
                 ", templateBody='" + templateBody + '\'' +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", active=" + active +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", isActive=" + isActive +
                 ", isDelete=" + isDelete +
                 '}';
     }

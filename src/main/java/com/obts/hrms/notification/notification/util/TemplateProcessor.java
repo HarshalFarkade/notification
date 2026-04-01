@@ -10,16 +10,18 @@ public class TemplateProcessor {
 
         if (template == null || data == null) return template;
 
-        String result = template;
+        StringBuilder result = new StringBuilder(template);
 
         for (Map.Entry<String, Object> entry : data.entrySet()) {
-
             String key = "${" + entry.getKey() + "}";
             String value = entry.getValue() != null ? entry.getValue().toString() : "";
 
-            result = result.replace(key, value);
+            int index;
+            while ((index = result.indexOf(key)) != -1) {
+                result.replace(index, index + key.length(), value);
+            }
         }
 
-        return result;
+        return result.toString();
     }
 }

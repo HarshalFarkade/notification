@@ -46,29 +46,17 @@ public class NotificationServiceImpl implements NotificationService {
 
         try {
 
-
             TemplateEntity template = templateRepository
-                    .findByTemplateNameAndActiveTrueAndIsDeleteFalse(request.getMailTemplate())
-                    .orElseThrow(() -> new RuntimeException("Template not found"));
-
-
-            LocalDate today = LocalDate.now();
-            if ((template.getStartDate() != null && today.isBefore(template.getStartDate())) ||
-                    (template.getEndDate() != null && today.isAfter(template.getEndDate()))) {
-
-                return new SendMailResponseDTO(false, "Template not active", null);
-            }
+                    .findByTemplateNameAndIsActiveTrueAndIsDeleteFalse(request.getMailTemplate())
+                    .orElseThrow(() -> new RuntimeException("Template not found or inactive"));
 
             Map<String, Object> data = request.getMapToTemplate();
-
 
             String subject = request.getSubject() != null
                     ? request.getSubject()
                     : templateProcessor.process(template.getTemplateSubject(), data);
 
-
             String body = templateProcessor.process(template.getTemplateBody(), data);
-
 
             NotificationEntity notification = new NotificationEntity();
             notification.setEmployeeId(request.getEmployeeId());

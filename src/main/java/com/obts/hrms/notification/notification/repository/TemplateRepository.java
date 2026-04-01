@@ -8,7 +8,7 @@ import java.util.Optional;
 
 @Repository
 public interface TemplateRepository extends JpaRepository<TemplateEntity,Long> {
-    Optional<TemplateEntity> findByTemplateNameAndActiveTrueAndIsDeleteFalse(String templateName);
+    Optional<TemplateEntity> findByTemplateNameAndIsActiveTrueAndIsDeleteFalse(String templateName);
 
     Optional<Object> findByTemplateName(String templateName);
 }
