@@ -26,17 +26,21 @@ public class AsyncEmailService {
     public void sendMailAsync(Long notificationId, String to, String subject, String body) {
 
         log.info("🚀 Async email triggered for notificationId: {}", notificationId);
+        log.info("Thread: {}", Thread.currentThread().getName());
 
-        NotificationEntity notification = notificationRepository
-                .findById(notificationId)
-                .orElse(null);
+        NotificationEntity notification = null;
+
+        if (notificationId != null) {
+            notification = notificationRepository
+                    .findById(notificationId)
+                    .orElse(null);
+        }
 
         try {
             emailService.send(to, subject, body);
 
             if (notification != null) {
-                // Optional: add status column
-                // notification.setStatus("SUCCESS");
+                notification.setStatus("SUCCESS");
                 notificationRepository.save(notification);
             }
 
@@ -47,7 +51,7 @@ public class AsyncEmailService {
             log.error("❌ Async email failed for ID: {}", notificationId, e);
 
             if (notification != null) {
-                // notification.setStatus("FAILED");
+                notification.setStatus("FAILED");
                 notificationRepository.save(notification);
             }
         }

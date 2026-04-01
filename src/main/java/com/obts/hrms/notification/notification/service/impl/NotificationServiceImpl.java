@@ -46,28 +46,30 @@ public class NotificationServiceImpl implements NotificationService {
 
         try {
 
+            // 🔥 1. Fetch template
             TemplateEntity template = templateRepository
                     .findByTemplateNameAndIsActiveTrueAndIsDeleteFalse(request.getMailTemplate())
                     .orElseThrow(() -> new RuntimeException("Template not found or inactive"));
 
             Map<String, Object> data = request.getMapToTemplate();
 
-            String subject = request.getSubject() != null
-                    ? request.getSubject()
-                    : templateProcessor.process(template.getTemplateSubject(), data);
-
+            // 🔥 2. Process subject & body
+            String subject = templateProcessor.process(template.getTemplateSubject(), data);
             String body = templateProcessor.process(template.getTemplateBody(), data);
 
+            // 🔥 3. Save notification
             NotificationEntity notification = new NotificationEntity();
             notification.setEmployeeId(request.getEmployeeId());
             notification.setToMail(request.getToMail());
             notification.setSubject(subject);
+            notification.setBody(body); // ✅ IMPORTANT ADD
             notification.setMailTemplate(request.getMailTemplate());
             notification.setMapToTemplate(jsonUtil.toJson(data));
-            notification.setCreatedAt(LocalDate.now());
+            notification.setCreatedAt(LocalDate.now()); // ✅ FIXED
 
             notification = notificationRepository.save(notification);
 
+            // 🔥 4. Async email
             asyncEmailService.sendMailAsync(
                     notification.getId(),
                     request.getToMail(),
@@ -75,7 +77,7 @@ public class NotificationServiceImpl implements NotificationService {
                     body
             );
 
-            return new SendMailResponseDTO(true, "Email sent Successfully", notification.getId());
+            return new SendMailResponseDTO(true, "Email triggered successfully", notification.getId());
 
         } catch (Exception e) {
             return new SendMailResponseDTO(false, e.getMessage(), null);

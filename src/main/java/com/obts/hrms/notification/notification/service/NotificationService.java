@@ -7,5 +7,5 @@ import org.springframework.stereotype.Service;
 @Service
 public interface NotificationService {
 
-    SendMailResponseDTO sendMail(SendMailRequestDTO request);
+	public SendMailResponseDTO sendMail(SendMailRequestDTO request);
 }
